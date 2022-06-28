@@ -1,21 +1,14 @@
-## # #
-## # # The input file is based heavily on the ASPECT cookbook 'Continental Extension' which was developed by Prof John Naliboff. The authors thank Prof Naliboff for his work.  
-## # # 
-## # # The majority of the models were completed with the following ASPECT specifications:
-##-- This is ASPECT, the Advanced Solver for Problems in Earth's ConvecTion.
-#
+# The majority of the models were completed with the following ASPECT specifications:
+##-- This is ASPECT, the Advanced Solver for Problems in Earth's Convection.
 ##-- . version 2.2.0-pre (master, 8df71c585)
-#
 ##-- . using deal.II 9.1.1
-#
 ##-- . using Trilinos 12.12.1
-#
 ##-- . using p4est 2.0.0
-#
 ##-- . running in OPTIMIZED mode
-#
 ##-- . running with 400 MPI processes
-set Dimension                              = 3
+
+
+set Dimension                              = 2
 set Start time                             = 0
 set End time                               = 25e6
 set Use years in output instead of seconds = true
@@ -23,48 +16,45 @@ set Nonlinear solver scheme                = single Advection, iterated Stokes
 set Nonlinear solver tolerance             = 1e-4
 set Max nonlinear iterations               = 50
 set CFL number                             = 0.3
-set Output directory                       = output_EXP1
+set Output directory                       = output-allken_2013
 set Timing output frequency                = 1
 set Pressure normalization                 = no
-set Resume computation                    = auto
-
+set Resume computation                     = auto
 
 
 subsection Checkpointing
-   set Steps between checkpoint = 5
-   set Time between checkpoint  = 0
+  set Steps between checkpoint = 5
+  set Time between checkpoint  = 0
 end
 
-#### Parameters describing the model
 
-## Model geometry (400x400x600 km, 2 km spacing initially)
-#
+## Model geometry (400x600 km box, 2 km spacing initially)
+
 subsection Geometry model
   set Model name = box
+
   subsection Box
     set X repetitions = 2
-    set Y repetitions = 2
-    set Z repetitions = 3
+    set Y repetitions = 3
     set X extent      = 400e3
-    set Y extent      = 400e3
-    set Z extent      = 600e3
+    set Y extent      = 600e3
   end
 end
 
-# Mesh refinement specifications 
-# # # (increased refinement for top 80 km)
+
+# Mesh refinement specifications (increased refinement for top 80 km)
+
 subsection Mesh refinement
-  set Initial adaptive refinement        = 3
-  set Initial global refinement          = 3
-  set Time steps between mesh refinement = 5
-  set Minimum refinement level                 =3
-
+  set Initial adaptive refinement              = 3
+  set Initial global refinement                = 3
+  set Time steps between mesh refinement       = 5
+  set Minimum refinement level                 = 3
   set Strategy                                 = minimum refinement function
-  subsection Minimum refinement function
-        set Coordinate system = cartesian
-        set Variable names = x,y, z
-      set Function expression = if(z>=520e3, 7,if(z<520e3 && z>=420e3, 3 ,3))
 
+  subsection Minimum refinement function
+    set Coordinate system = cartesian
+    set Variable names = x, y
+    set Function expression = if(y>=520e3, 7, if(y<520e3 && y>=420e3, 3 ,3))
    end
 end
 
@@ -72,56 +62,52 @@ subsection Discretization
   set Composition polynomial degree           = 2
   set Stokes velocity polynomial degree       = 2
   set Temperature polynomial degree           = 2
+
   subsection Stabilization parameters
-        set beta                                               = 0.078
-        set cR                                                 = 0.33
-   end
+    set beta                                  = 0.078
+    set cR                                    = 0.33
+  end
 end
 
 subsection Free surface
   set Free surface boundary indicators  = top
   set Surface velocity projection       = vertical
-  set Additional tangential mesh velocity boundary indicators = left, right, front, back
+  set Additional tangential mesh velocity boundary indicators = left, right
 end
 
 
-#subsection Free surface
-#  set Surface velocity projection = vertical
-#  set Free surface boundary indicators        = top
-
-#end
-
 # Boundary classifications
-# # # Composition: fixed on bottom, free on sides and top
-# # # Velocity: free surface on top, outflow at bottom of  sides,
-# # #  inflow at base and in the lithosphere
-# # # Temperature: fixed at top and bottom, insulating sides
+# Composition: fixed on bottom, free on sides and top
+# Velocity: free surface on top, outflow at bottom of sides, inflow at base and in the lithosphere
+# Temperature: fixed at top and bottom, insulating sides
 # Velocity on boundaries characterized by functions
-subsection Boundary velocity model
-  set Prescribed velocity boundary indicators = left x: function, right x:function, bottom z:function
-  set Tangential velocity boundary indicators = front, back
-  subsection Function
-    set Variable names      = x,y,z
-    set Function constants  = cm=-0.005, year=1
-        set Function expression = if (x<=0e3 && z>=480e3, 1.0*cm/year,\
-                 if (x>=400e3 && z>=480e3, -1.0*cm/year, \
-                if (x<=0e3 && z<480e3 && z>=375e3,  \
-                 (1.*cm/year - ((0.00000952381)*(600e3-120e3-z)*cm/year)), \
-                if (x>=400e3 && z<480e3 && z>=375e3,  \
-                (-1.*cm/year + ((0.00000952381)*(600e3-120e3-z)*cm/year)), \
-                if (x<=0e3 && z>=200e3 && z<375e3,  \
-                (0 - ((0.00000342857)*(600e3-120e3-105e3-z)))*cm/year, \
-                if (x>=400e3 && z>=200e3 && z<375e3,  \
-                (0 + ((0.00000342857)*(600e3-120e3-105e3-z)))*cm/year, \
-                if (x>=400e3 && z<200e3,  (0.6*cm/year),\
-                if (x<=0e3 &&  z<200e3,  (-0.6*cm/year), 0))))))));0; 0
 
+subsection Boundary velocity model
+  set Prescribed velocity boundary indicators = left x: function, right x: function, bottom y: function
+  # set Tangential velocity boundary indicators = front, back
+
+  subsection Function
+    set Variable names = x, y
+    set Function constants = cm=-0.005, year=1
+    set Function expression = if (x<=0e3 && y>=480e3, 1.0*cm/year, \
+      if (x>=400e3 && y>=480e3, -1.0*cm/year, \
+      if (x<=0e3 && y<480e3 && y>=375e3, \
+        (1.*cm/year - ((0.00000952381)*(600e3-120e3-y)*cm/year)), \
+      if (x>=400e3 && y<480e3 && y>=375e3, \
+      (-1.*cm/year + ((0.00000952381)*(600e3-120e3-y)*cm/year)), \
+      if (x<=0e3 && y>=200e3 && y<375e3, \
+      (0 - ((0.00000342857)*(600e3-120e3-105e3-y)))*cm/year, \
+      if (x>=400e3 && y>=200e3 && y<375e3, \
+      (0 + ((0.00000342857)*(600e3-120e3-105e3-y)))*cm/year, \
+      if (x>=400e3 && y<200e3, (0.6*cm/year), \
+      if (x<=0e3 && y<200e3, (-0.6*cm/year), 0)))))))); 0
   end
 end
 
+
 # Number and names of compositional fields
-# # # The six compositional fields represent the total strain, upper crust, lower crust, mantle
-# # # astenosphere, and a suture (seed) placed in the mantle.
+# The six compositional fields represent the total strain, upper crust, lower crust, mantle, astenosphere, and a suture (seed) placed in the mantle.
+
 subsection Compositional fields
   set Number of fields = 7
   set Names of fields = plastic_strain, upper, lower, mantle, astheno, seed, NAC
@@ -129,87 +115,83 @@ end
 
 
 # Spatial domain of different compositional fields
-# # # The upper crust, lower crust, mantle, and astenosphere are continuous horizontal layers
-# # # of varying thickness. 
-# # # pi = pi
-# # # scar_wid = width of suture 
-# # angle_vert = angle of suture from vertical in x-y plane (set to 60 here)
-# # # ylim1, ylim2, xlim1, xlim2 = positioning of suture.
+# The upper crust, lower crust, mantle, and astenosphere are continuous horizontal layers of varying thickness. 
+# pi = pi
+# scar_wid = width of suture 
+# angle_vert = angle of suture from vertical in x-y plane (set to 60 here)
+# ylim1, ylim2, xlim1, xlim2 = positioning of suture
+
 subsection Initial composition model
   set Model name = function
+
   subsection Function
-    set Variable names      = x,y, z
-set Function constants = angle_hor=60, pi=3.14159265359, scar_wid=10e3, angle_vert = 45, scar_len = 50e3, ylim1=250e3, ylim2= 350.e3, xlim1=150e3, xlim2 = 250e3, crust=40e3 
-
+    set Variable names = x,y
+    set Function constants = angle_vert = 60, pi = 3.14159265359, scar_wid = 10e3, scar_len = 50e3, ylim1 = 250e3, ylim2 = 350.e3, xlim1 = 150e3, xlim2 = 250e3, crust = 40e3 
     set Function expression = 0; \ 
-		if(z>580.e3  && y>=(ylim2-(600e3-z)*tan(angle_hor*(pi/180))) || z>580.e3 && x<(xlim1+(600e3-z)*tan(angle_hor*(pi/180))) || z>580.e3  && x<(xlim1+(y-ylim1)/tan(angle_vert*(pi/180))+(600e3-z)*tan(angle_hor*(pi/180))), 1, 0); \ 
-                              if(z<580.e3 && z>=560.e3, 1, 0); \
-                              if(z<560.e3 && z>=480.e3,1, 0); \
-                              if(z<480.e3 && z>-200.e3,1, 0); \
-			if(z<560.e3 && z>540.e3  && y>=ylim1 && y<(ylim2-(crust*tan(angle_hor*(pi/180)))-(560e3-z)*tan(angle_hor*(pi/180))) && x>=(xlim1+(crust*tan(angle_hor*(pi/180)))+(y-ylim1+(560e3-z)*tan(angle_hor*(pi/180)))) &&  x<(xlim1+(crust*tan(angle_hor*(pi/180)))+(scar_wid)+(y-ylim1+(560e3-z)*tan(angle_hor*(pi/180)))) \
-		 || (z<560.e3 && z>540.e3 && y<ylim1 && x>=(xlim1+(crust*tan(angle_hor*(pi/180)))+(560e3-z)*tan(angle_hor*(pi/180)))) && x<(xlim1+(crust*tan(angle_hor*(pi/180)))+(scar_wid)+(560e3-z)*tan(angle_hor*(pi/180))) \
-		|| (z<560.e3 && z>540.e3 && x>=xlim2 && y>=(ylim2-(crust*tan(angle_hor*(pi/180)))-scar_wid-(560e3-z)*tan(angle_hor*(pi/180))) && y<(ylim2-(crust*tan(angle_hor*(pi/180)))-(560e3-z)*tan(angle_hor*(pi/180)))) \
-		,1,0); \
-		if(z>580.e3  && y>=ylim1 && y<(ylim2-(600e3-z)*tan(angle_hor*(pi/180))) && x>=(xlim1+(y-ylim1)/tan(angle_vert*(pi/180))+(600e3-z)*tan(angle_hor*(pi/180))) || (z>580.e3 && y<ylim1 && x>=(xlim1+(600e3-z)*tan(angle_hor*(pi/180)))), 1, 0);
-
-
-
+      if(y>580.e3 && x<(xlim1+(600e3-y)*tan(angle_vert*(pi/180))), 1, 0); \ 
+      if(y<580.e3 && y>=560.e3, 1, 0); \
+      if(y<560.e3 && y>=480.e3, 1, 0); \
+      if(y<480.e3 && y>-200.e3, 1, 0); \
+      if(y<560.e3 && y>540.e3  && x>=(xlim1+(crust*tan(angle_vert*(pi/180)))+(560e3-y)*tan(angle_vert*(pi/180))) && x<(xlim1+(crust*tan(angle_vert*(pi/180)))+(scar_wid)+(560e3-y)*tan(angle_vert*(pi/180))) \
+      ,1,0); \
+      if(y>580.e3 && x>=(xlim1+(600e3-y)*tan(angle_vert*(pi/180))), 1, 0);
+	end
 end
-end
+
 
 # Composition boundary conditions
+
 subsection Boundary composition model
   set Model name = initial composition
 end
 
+
 # Temperature boundary conditions
 # Top and bottom (fixed) temperatures are consistent with the initial temperature field
-# Note that while temperatures are specified for the model sides, these values are
-# not used as the sides are not specified "Fixed temperature boundaries".  Rather,
-# these boundaries are insulating (zero net heat flux).
+# Note that while temperatures are specified for the model sides, these values are not used as the sides are not specified "Fixed temperature boundaries".  
+# Rather, these boundaries are insulating (zero net heat flux).
+
 subsection Boundary temperature model
   set Fixed temperature boundary indicators = bottom, top
-
   set List of model names = box
+
   subsection Box
     set Bottom temperature = 1839.751592
     set Top temperature    =  273
   end
 end
 
-# # Started from the ASPECT cookbook 'Continental Extension' by 
-# # # Prof John Naliboff. 
-# # #
-# # # Typical continental geotherm based on equations 4-6 from:
-# # #   D.S. Chapman (1986), "Thermal gradients in the continental crust",
-# # #   Geological Society of London Special Publications, v.24, p.63-70.
-#
+
 subsection Initial temperature model
   set Model name = function
-  subsection Function
-    set Variable names = x,y, z
-    set Function constants = h=600e3,ts1=273,ts2=633,ts3=893,ts4=1693., \
-                                     k1=2.5,k2=2.5,k3=2.5,k4=39.25,A=1.0e-6, A2 =0.25e-6, \
-                             qs1=0.055,qs2=0.035,qs3=0.025,qs4=0.012
 
-    set Function expression = if( (h-z)<=20.e3, \
-                                  ts1 + (qs1/k1)*(h-z) - (A*(h-z)*(h-z))/(2.0*k1), \
-                                  if((h-z)>20.e3 && (h-z)<=40.e3, ts2 + (qs2/k2)*(h-z-20.e3)-(A2*(h-z-20.e3)*(h-z-20.e3))/(2.0*k2),\
-                if((h-z)>40.e3 && (h-z)<=120.e3, ts3 + (qs3/k3)*(h-z-40.e3), \
-                        ts4 + (qs4/k4)*(h-z-120e3))));                              
+  subsection Function
+    set Variable names = x,y
+    set Function constants = h=600e3, ts1=273, ts2=633, ts3=893, ts4=1693., \
+                             k1=2.5, k2=2.5, k3=2.5, k4=39.25, A=1.0e-6, A2=0.25e-6, \
+                             qs1=0.055, qs2=0.035, qs3=0.025, qs4=0.012
+    set Function expression = if((h-y)<=20.e3, \
+                              ts1 + (qs1/k1)*(h-y) - (A*(h-y)*(h-y))/(2.0*k1), \
+                              if((h-y)>20.e3 && (h-y)<=40.e3, ts2 + (qs2/k2)*(h-y-20.e3)-(A2*(h-y-20.e3)*(h-y-20.e3))/(2.0*k2),\
+                              if((h-y)>40.e3 && (h-y)<=120.e3, ts3 + (qs3/k3)*(h-y-40.e3), \
+                              ts4 + (qs4/k4)*(h-y-120e3))));                              
   end
 end
 
-# Constant internal heat production values (W/m^3) for background material
-# and compositional fields.
+
+# Constant internal heat production values (W/m^3) for background material and compositional fields.
+
 subsection Heating model
   set List of model names = compositional heating
+
   subsection Compositional heating
     set Compositional heating values = 0., 0., 1.0e-6, 0.25e-6, 0., 0., 0., 1.0e-6
   end
 end
 
+
 # Material model
+
 subsection Material model
   set Model name = visco plastic
 
@@ -219,10 +201,8 @@ subsection Material model
     set Reference temperature = 273
     set Reference viscosity = 1e22
     
-    # The minimum strain-rate helps limit large viscosities values that arise
-    # as the strain-rate approaches zero.
-    # The reference strain-rate is used on the first non-linear iteration
-    # of the first time step when the velocity has not been determined yet. 
+    # The minimum strain-rate helps limit large viscosities values that arise as the strain-rate approaches zero.
+    # The reference strain-rate is used on the first non-linear iteration of the first time step when the velocity has not been determined yet. 
     set Minimum strain rate = 1.e-20
     set Reference strain rate = 1.e-16
 
@@ -230,42 +210,39 @@ subsection Material model
     set Minimum viscosity = 1e18
     set Maximum viscosity = 1e26
 
-    # Thermal diffusivity is adjusted to match thermal conductivities
-    # assumed in assigning the initial geotherm
+    # Thermal diffusivity is adjusted to match thermal conductivities assumed in assigning the initial geotherm
     set Thermal diffusivities = 1.010101e-6, 1.010101e-6, 1.190476e-6, 1.149425e-6, 1.010101e-6, 1.010101e-6, 1.010101e-6, 1.190476e-6
-    set Heat capacities       =        750
-    set Densities             =        3300, 3300,        2800,        2900,        3300,         3300, 3300, 2800
-    set Thermal expansivities =        2e-5
+    set Heat capacities       = 750
+    set Densities             = 3300, 3300, 2800, 2900, 3300, 3300, 3300, 2800
+    set Thermal expansivities = 2e-5
 
     # Harmonic viscosity averaging
     set Viscosity averaging scheme = harmonic
 
-    # Choose to have the viscosity (pre-yield) follow a dislocation
-    # diffusion or composite flow law.  Here, dislocation is selected
-    # so no need to specify diffusion creep parameters below, which are
-    # only used if "diffusion" or "composite" option is selected.
+    # Choose to have the viscosity (pre-yield) follow a dislocation diffusion or composite flow law.  Here, dislocation is selected so no need to specify diffusion creep parameters below, which are only used if "diffusion" or "composite" option is selected.
     set Viscous flow law = dislocation
 
-    # Dislocation creep parameters for 
+    # Dislocation creep parameters
     set Prefactors for dislocation creep          = 6.52e-16, 6.52e-16, 8.57e-28, 7.13e-18, 6.52e-16, 6.52e-16, 6.52e-16,8.57e-28 
-    set Stress exponents for dislocation creep    =      3.5, 3.5,      4.0,      3.0,      3.5, 3.5, 3.5, 4.0
-    set Activation energies for dislocation creep =   530.e3, 530.e3,   223.e3,   345.e3,   530.e3, 530.e3, 530.e3, 223.e3
-    set Activation volumes for dislocation creep  =  18.e-6, 18.e-6,       0.,       0.,   18.e-6, 18.e-6,  18.e-6, 0.
+    set Stress exponents for dislocation creep    = 3.5, 3.5, 4.0, 3.0, 3.5, 3.5, 3.5, 4.0
+    set Activation energies for dislocation creep = 530.e3, 530.e3, 223.e3,   345.e3, 530.e3, 530.e3, 530.e3, 223.e3
+    set Activation volumes for dislocation creep  = 18.e-6, 18.e-6, 0., 0.,   18.e-6, 18.e-6, 18.e-6, 0.
 
     # Plasticity parameters - weakness of suture given by lowering angle of friction
     set Angles of internal friction = 15., 15., 15., 15., 15., 15., 0., 15.
-    set Cohesions = 20.e6
+    set Cohesions                   = 20.e6
     set Use strain weakening = true
     set Use plastic strain weakening = true
     set Start plasticity strain weakening intervals  = 0.0
     set End plasticity strain weakening intervals    = 1.25
-    set Cohesion strain weakening factors            = 0.25
-    set Friction strain weakening factors            = 0.25
-
+    set Cohesion strain weakening factors            = 0.5
+    set Friction strain weakening factors            = 0.5
   end
 end
 
+
 # Gravity model
+
 subsection Gravity model
   set Model name = vertical
 
@@ -274,24 +251,28 @@ subsection Gravity model
   end
 end
 
+
 subsection Formulation
         set Formulation = custom
         set Mass conservation = ask material model
         set Temperature equation = reference density profile
 end
 
+
 # Post processing
+
 subsection Postprocess
   set List of postprocessors = velocity statistics, topography, basic statistics, temperature statistics, visualization
+
   subsection Visualization
     set List of output variables = density, heat flux map, named additional outputs, strain rate, viscosity
-    set Output format = vtu
-    set Time between graphical output = 10e6
-    set Interpolate output = true
-    set Number of grouped files       = 8
-
+    set Output format                 = vtu
+    set Time between graphical output = 0.5e6
+    set Interpolate output            = true
+    set Number of grouped files       = 1
   end
 end
+
 
 subsection Solver parameters
   subsection Stokes solver parameters

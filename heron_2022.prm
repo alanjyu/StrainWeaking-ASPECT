@@ -84,23 +84,23 @@ end
 
 subsection Boundary velocity model
   set Prescribed velocity boundary indicators = left x: function, right x: function, bottom y: function
-  set Tangential velocity boundary indicators = front, back
+  # set Tangential velocity boundary indicators = front, back
 
   subsection Function
-    set Variable names = x,y
+    set Variable names = x, y
     set Function constants = cm=-0.005, year=1
-    set Function expression = if (x<=0e3 && y>=480e3, 1.0*cm/year,\
+    set Function expression = if (x<=0e3 && y>=480e3, 1.0*cm/year, \
       if (x>=400e3 && y>=480e3, -1.0*cm/year, \
-      if (x<=0e3 && y<480e3 && y>=375e3,  \
+      if (x<=0e3 && y<480e3 && y>=375e3, \
         (1.*cm/year - ((0.00000952381)*(600e3-120e3-y)*cm/year)), \
-      if (x>=400e3 && y<480e3 && y>=375e3,  \
+      if (x>=400e3 && y<480e3 && y>=375e3, \
       (-1.*cm/year + ((0.00000952381)*(600e3-120e3-y)*cm/year)), \
-      if (x<=0e3 && y>=200e3 && y<375e3,  \
+      if (x<=0e3 && y>=200e3 && y<375e3, \
       (0 - ((0.00000342857)*(600e3-120e3-105e3-y)))*cm/year, \
-      if (x>=400e3 && y>=200e3 && y<375e3,  \
+      if (x>=400e3 && y>=200e3 && y<375e3, \
       (0 + ((0.00000342857)*(600e3-120e3-105e3-y)))*cm/year, \
-      if (x>=400e3 && y<200e3,  (0.6*cm/year),\
-      if (x<=0e3 &&  y<200e3,  (-0.6*cm/year), 0)))))))); 0
+      if (x>=400e3 && y<200e3, (0.6*cm/year), \
+      if (x<=0e3 && y<200e3, (-0.6*cm/year), 0)))))))); 0
   end
 end
 
@@ -138,7 +138,9 @@ subsection Initial composition model
 	end
 end
 
+
 # Composition boundary conditions
+
 subsection Boundary composition model
   set Model name = initial composition
 end
@@ -240,6 +242,7 @@ end
 
 
 # Gravity model
+
 subsection Gravity model
   set Model name = vertical
 
@@ -262,7 +265,7 @@ subsection Postprocess
   set List of postprocessors = velocity statistics, topography, basic statistics, temperature statistics, visualization
 
   subsection Visualization
-    set List of output variables = density, heat flux map, named additional outputs, strain rate, viscosity
+    set List of output variables = density, topography, heat flux map, named additional outputs, strain rate, viscosity
     set Output format                 = vtu
     set Time between graphical output = 0.5e6
     set Interpolate output            = true
