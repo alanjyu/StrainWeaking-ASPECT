@@ -19,7 +19,7 @@
 | [Continental extension cookbook](https://github.com/geodynamics/aspect/blob/main/cookbooks/continental_extension/continental_extension.prm) | | 30 | 20.e6 | 0.5 | 1.5 | 0.25 | 0.25
 | [Heron et al., 2019](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2019TC005578) | heron_2019.prm | 20 | 20.e6 | 0.0 | 0.5 | 0.5 | 0.5 |
 | [Naliboff et al., 2020](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2019GL086611) | heron_2022.prm | 30 | 20.e6 | 0.5 | 1.5 | 0.5 | 0.5 |
-| [Gouiza & Naliboff, 2021](https://www.nature.com/articles/s41467-021-24945-5) | gouiza_2021.prm | 30 | 20.e6 | 0.5 | 1.5 | 1.0 | 0.25
+| [Gouiza & Naliboff, 2021](https://www.nature.com/articles/s41467-021-24945-5) | gouiza_2021_viscous.prm | 30 | 20.e6 | 0.5 | 1.5 | 1.0 | 0.25
 
 \* These sources might use different equations or code libraries.
 
