@@ -16,7 +16,7 @@ set Nonlinear solver scheme                = single Advection, iterated Stokes
 set Nonlinear solver tolerance             = 1e-4
 set Max nonlinear iterations               = 50
 set CFL number                             = 0.3
-set Output directory                       = output-gouiza_2021
+set Output directory                       = output-heron_2022_15aif
 set Timing output frequency                = 1
 set Pressure normalization                 = no
 set Resume computation                     = auto
@@ -57,7 +57,6 @@ subsection Mesh refinement
     set Function expression = if(y>=520e3, 7, if(y<520e3 && y>=420e3, 3 ,3))
    end
 end
-
 
 subsection Discretization
   set Composition polynomial degree           = 2
@@ -230,14 +229,14 @@ subsection Material model
     set Activation volumes for dislocation creep  = 18.e-6, 18.e-6, 0., 0.,   18.e-6, 18.e-6, 18.e-6, 0.
 
     # Plasticity parameters - weakness of suture given by lowering angle of friction
-    set Angles of internal friction = 30., 30., 30., 30., 30., 30., 0., 30.
+    set Angles of internal friction = 15., 15., 15., 15., 15., 15., 0., 15.
     set Cohesions                   = 20.e6
     set Use strain weakening = true
     set Use plastic strain weakening = true
     set Start plasticity strain weakening intervals  = 0.5
     set End plasticity strain weakening intervals    = 1.5
-    set Cohesion strain weakening factors            = 1.0
-    set Friction strain weakening factors            = 0.25
+    set Cohesion strain weakening factors            = 0.5
+    set Friction strain weakening factors            = 0.5
   end
 end
 

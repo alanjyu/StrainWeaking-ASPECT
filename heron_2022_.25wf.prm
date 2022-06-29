@@ -16,7 +16,7 @@ set Nonlinear solver scheme                = single Advection, iterated Stokes
 set Nonlinear solver tolerance             = 1e-4
 set Max nonlinear iterations               = 50
 set CFL number                             = 0.3
-set Output directory                       = output-gouiza_2021
+set Output directory                       = output-heron_2022_.25wf
 set Timing output frequency                = 1
 set Pressure normalization                 = no
 set Resume computation                     = auto
@@ -57,7 +57,6 @@ subsection Mesh refinement
     set Function expression = if(y>=520e3, 7, if(y<520e3 && y>=420e3, 3 ,3))
    end
 end
-
 
 subsection Discretization
   set Composition polynomial degree           = 2
@@ -236,7 +235,7 @@ subsection Material model
     set Use plastic strain weakening = true
     set Start plasticity strain weakening intervals  = 0.5
     set End plasticity strain weakening intervals    = 1.5
-    set Cohesion strain weakening factors            = 1.0
+    set Cohesion strain weakening factors            = 0.25
     set Friction strain weakening factors            = 0.25
   end
 end

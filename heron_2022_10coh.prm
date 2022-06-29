@@ -16,7 +16,7 @@ set Nonlinear solver scheme                = single Advection, iterated Stokes
 set Nonlinear solver tolerance             = 1e-4
 set Max nonlinear iterations               = 50
 set CFL number                             = 0.3
-set Output directory                       = output-gouiza_2021
+set Output directory                       = output-heron_2022_10coh
 set Timing output frequency                = 1
 set Pressure normalization                 = no
 set Resume computation                     = auto
@@ -69,6 +69,7 @@ subsection Discretization
     set cR                                    = 0.33
   end
 end
+
 
 subsection Free surface
   set Free surface boundary indicators  = top
@@ -231,13 +232,13 @@ subsection Material model
 
     # Plasticity parameters - weakness of suture given by lowering angle of friction
     set Angles of internal friction = 30., 30., 30., 30., 30., 30., 0., 30.
-    set Cohesions                   = 20.e6
+    set Cohesions                   = 10.e6
     set Use strain weakening = true
     set Use plastic strain weakening = true
     set Start plasticity strain weakening intervals  = 0.5
     set End plasticity strain weakening intervals    = 1.5
-    set Cohesion strain weakening factors            = 1.0
-    set Friction strain weakening factors            = 0.25
+    set Cohesion strain weakening factors            = 0.5
+    set Friction strain weakening factors            = 0.5
   end
 end
 
