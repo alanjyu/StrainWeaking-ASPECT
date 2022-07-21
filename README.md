@@ -26,14 +26,10 @@
 
 ## List of original parameters
 
-- Base & Naliboff et al., 2020 [(original file)](https://github.com/naliboff/aspect/blob/naliboff_etal_2020_grl/naliboff_etal_2020_grl.prm)
+- [Naliboff et al., 2020](https://github.com/naliboff/aspect/blob/naliboff_etal_2020_grl/naliboff_etal_2020_grl.prm)
 
-- Continental extension cookbook [(original file)](https://github.com/geodynamics/aspect/blob/main/cookbooks/continental_extension/continental_extension.prm)
+- [ASPECT continental extension cookbook](https://github.com/geodynamics/aspect/blob/main/cookbooks/continental_extension/continental_extension.prm)
 
-- Heron et al., 2019 [(original file)](https://github.com/heronphi/HeronTectonics2019/blob/master/HeronTectonics_M1.prm)
+- [Heron et al., 2019](https://github.com/heronphi/HeronTectonics2019/blob/master/HeronTectonics_M1.prm)
 
-- Gouiza & Naliboff, 2021 [(original files)](https://github.com/naliboff/aspect/tree/labrador_sea_gouiza_naliboff_2020/labrador_sea_gouiza_naliboff_2020_models).
-
-## To read
-  
-- [Duclaux et al., 2019](https://www.sciencedirect.com/science/article/pii/S0012821X19306442) 
+- [Gouiza & Naliboff, 2021](https://github.com/naliboff/aspect/tree/labrador_sea_gouiza_naliboff_2020/labrador_sea_gouiza_naliboff_2020_models).
