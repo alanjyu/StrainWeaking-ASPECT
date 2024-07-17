@@ -3,8 +3,8 @@
 
 ## Table of parameters
 
-- **AIF** = intial angle(s) of internal friction in deg
-- **Coh** = intial cohesions in Pa
+- **AIF** = initial angle(s) of internal friction in deg
+- **Coh** = initial cohesions in Pa
 - **Str_Wk** = start plasticity strain weakening intervals
 - **End_Wk** = end plasticity strain weakening intervals
 - **Coh_F** = cohesion strain weakening factors
