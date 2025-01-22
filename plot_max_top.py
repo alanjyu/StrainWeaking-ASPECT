@@ -6,21 +6,21 @@ import numpy as np
 
 
 # import stats file from line 29
-stats_h22 = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-heron_2022\statistics').readlines()[28:] # heron_2022
+stats_h22 = open(r'\output-heron_2022\statistics').readlines()[28:] # heron_2022
 
-stats_15aif = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-heron_2022_15aif\statistics').readlines()[28:] # heron_2022_15aif
+stats_15aif = open(r'\output-heron_2022_15aif\statistics').readlines()[28:] # heron_2022_15aif
 
-stats_10coh = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-heron_2022_10coh\statistics').readlines()[28:] # heron_2022_10coh
+stats_10coh = open(r'\output-heron_2022_10coh\statistics').readlines()[28:] # heron_2022_10coh
 
-stats_25wf = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-heron_2022_.25wf\statistics').readlines()[28:] # heron_2022_.25wf
+stats_25wf = open(r'\output-heron_2022_.25wf\statistics').readlines()[28:] # heron_2022_.25wf
 
-stats_h19 = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-heron_2019\statistics').readlines()[28:] # heron_2019
+stats_h19 = open(r'\output-heron_2019\statistics').readlines()[28:] # heron_2019
 
-stats_a13 = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-allken_2013\statistics').readlines()[28:] # allken_2013
+stats_a13 = open(r'\output-allken_2013\statistics').readlines()[28:] # allken_2013
 
-stats_b13 = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-brune_2013\statistics').readlines()[28:] # brune_2013
+stats_b13 = open(r'\output-brune_2013\statistics').readlines()[28:] # brune_2013
 
-stats_g21 = open(r'C:\Users\alanj\OneDrive - University of Toronto\Slivers\output-gouiza_2021\statistics').readlines()[28:] # gouiza_2021
+stats_g21 = open(r'\output-gouiza_2021\statistics').readlines()[28:] # gouiza_2021
 
 
 # append each line into a stripped list
